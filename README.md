@@ -1,95 +1,99 @@
 # Famous.ai Builder
 
-Famous.ai's advanced AI-powered app builder platform - A top-notch, super smart and fast application development system.
+> 🚀 A top-notch, super smart and fast AI-powered app builder platform
 
-![Digital Ninja](https://d64gsuwffb70l.cloudfront.net/6942bbf9b5d74fa2de2f380f_1765983551922_8b508212.jpg)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/Poach420/famous.ai-build/ci-cd.yml?branch=main)](https://github.com/Poach420/famous.ai-build/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node Version](https://img.shields.io/badge/node-20.x-brightgreen.svg)](https://nodejs.org/)
 
-## Features
+Famous.ai Builder is a comprehensive, production-ready platform for building, deploying, and scaling custom applications with AI assistance. Built with modern web technologies and integrated with GPT-4 for intelligent code generation.
 
-- **AI-Powered Code Generation**: Leverage GPT-4 to generate production-ready React components from natural language descriptions
-- **MongoDB Atlas Backend**: Fully managed cloud database with automatic scaling and enterprise-grade security
-- **One-Click Deployment**: Deploy to Vercel or Render with minimal configuration
-- **Zero Lock-In**: Export your code anytime - your apps run on standard infrastructure you control
-- **JWT Authentication**: Secure user authentication with access and refresh tokens
-- **Real-time Preview**: See generated code instantly in the app builder
+![Famous.ai Builder](https://d64gsuwffb70l.cloudfront.net/6942bbf9b5d74fa2de2f380f_1765983551922_8b508212.jpg)
 
-## Tech Stack
+## ✨ Features
+
+### Core Capabilities
+- 🤖 **AI-Powered Code Generation** - Leverage GPT-4 to generate production-ready code from natural language
+- 🎨 **Visual App Builder** - Intuitive interface for designing and building applications
+- 🚀 **Multi-Platform Deployment** - Deploy to Vercel, Render, Netlify, Railway, AWS, or GCP
+- 🔐 **Secure Authentication** - JWT-based auth with access and refresh tokens
+- 💾 **MongoDB Integration** - Scalable cloud database with automatic backups
+- 🎯 **Zero Vendor Lock-In** - Export your code anytime, run anywhere
+
+### Advanced Features
+- 📦 **Component Generation** - AI-generated React components with TypeScript
+- 🔄 **Code Refactoring** - Intelligent code improvement and optimization
+- 📊 **Usage Analytics** - Track AI generations and deployment statistics
+- 👥 **Team Management** - Collaboration features with role-based access
+- 🎨 **Custom Styling** - Support for Tailwind CSS, CSS, SCSS, and more
+- 🌐 **RESTful API** - Full-featured backend API for integrations
+
+## 🏗️ Tech Stack
 
 ### Frontend
-- React 18 with TypeScript
-- Vite for fast development and building
-- Tailwind CSS for styling
-- Custom UI components (Button, Card, Modal, Toast, etc.)
+- **React 18** - Modern React with hooks and functional components
+- **TypeScript** - Type-safe development
+- **Vite** - Lightning-fast build tool and dev server
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - High-quality, accessible component library
+- **React Router** - Client-side routing
+- **TanStack Query** - Powerful data synchronization
 
-### Backend (Supabase Edge Functions)
-- `ninja-auth`: JWT-based authentication (register, login, refresh)
-- `ninja-apps`: CRUD operations for user applications
-- `ninja-generate`: AI-powered code generation using GPT-4
-- `ninja-deploy`: Deployment bundle preparation for Vercel/Render
+### Backend API
+- **Node.js** - JavaScript runtime
+- **Express** - Fast, minimalist web framework
+- **MongoDB** - NoSQL database with Mongoose ODM
+- **JWT** - Secure token-based authentication
+- **OpenAI GPT-4** - AI-powered code generation
+- **Rate Limiting** - Built-in request throttling
 
-### Database
-- MongoDB Atlas for data persistence
-- Collections: `users`, `apps`, `deployments`
+### Infrastructure
+- **Vercel** - Frontend deployment and hosting
+- **MongoDB Atlas** - Cloud database hosting
+- **GitHub Actions** - CI/CD automation
+- **Environment Variables** - Secure configuration management
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-digital-ninja-builder/
-├── src/
-│   ├── components/
-│   │   ├── auth/
-│   │   │   └── AuthModal.tsx
-│   │   ├── layout/
-│   │   │   ├── Navbar.tsx
-│   │   │   └── Footer.tsx
-│   │   ├── pages/
-│   │   │   ├── HomePage.tsx
-│   │   │   ├── DashboardPage.tsx
-│   │   │   ├── BuilderPage.tsx
-│   │   │   ├── PricingPage.tsx
-│   │   │   ├── DeploymentsPage.tsx
-│   │   │   └── SettingsPage.tsx
-│   │   ├── ui/
-│   │   │   ├── Button.tsx
-│   │   │   ├── Card.tsx
-│   │   │   ├── Input.tsx
-│   │   │   ├── Modal.tsx
-│   │   │   ├── Badge.tsx
-│   │   │   └── Toast.tsx
-│   │   └── AppLayout.tsx
-│   ├── contexts/
-│   │   └── AuthContext.tsx
-│   ├── hooks/
-│   │   ├── useApi.ts
-│   │   └── useApps.ts
-│   ├── lib/
-│   │   └── supabase.ts
-│   ├── types/
-│   │   └── index.ts
-│   └── index.css
-├── supabase/
-│   └── functions/
-│       ├── ninja-auth/
-│       ├── ninja-apps/
-│       ├── ninja-generate/
-│       └── ninja-deploy/
-└── README.md
+famous.ai-build/
+├── src/                      # Frontend source code
+│   ├── components/          # React components
+│   │   ├── auth/           # Authentication components
+│   │   ├── layout/         # Layout components (Navbar, Footer)
+│   │   ├── pages/          # Page components
+│   │   └── ui/             # shadcn/ui components
+│   ├── contexts/           # React contexts (Auth, App)
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/                # Utility libraries
+│   ├── types/              # TypeScript type definitions
+│   └── main.tsx            # Application entry point
+├── api/                     # Backend API
+│   ├── controllers/        # Request handlers
+│   ├── middleware/         # Express middleware
+│   ├── models/             # MongoDB models
+│   ├── routes/             # API routes
+│   └── server.js           # API server entry point
+├── public/                  # Static assets
+├── .github/workflows/       # CI/CD workflows
+└── dist/                    # Production build (generated)
 ```
 
-## Installation
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 20.x or higher
 - npm or yarn
-- MongoDB Atlas account
-- OpenAI API key
+- MongoDB Atlas account (free tier available)
+- OpenAI API key (optional, for AI features)
 
-### Local Development
+### Frontend Setup
+### Frontend Setup
 
 1. **Clone the repository**
 ```bash
-git clone <repository-url>
-cd digital-ninja-builder
+git clone https://github.com/Poach420/famous.ai-build.git
+cd famous.ai-build
 ```
 
 2. **Install dependencies**
@@ -97,126 +101,179 @@ cd digital-ninja-builder
 npm install
 ```
 
-3. **Set up environment variables**
+3. **Configure environment variables**
 
-Create a `.env` file in the root directory:
+Create `.env.local` file in the root directory:
 ```env
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_API_URL=http://localhost:8000/api
+VITE_APP_NAME=Famous.ai Builder
 ```
 
-4. **Configure Supabase Edge Functions**
-
-Set the following secrets in your Supabase project:
-```bash
-supabase secrets set MONGODB_URI="mongodb+srv://username:password@cluster.mongodb.net/ninja_builder"
-supabase secrets set OPENAI_API_KEY="sk-your-openai-api-key"
-```
-
-5. **Start the development server**
+4. **Start development server**
 ```bash
 npm run dev
 ```
 
 The app will be available at `http://localhost:5173`
 
-## Deployment
+### Backend API Setup
 
-### Vercel Deployment
-
-1. **Install Vercel CLI**
+1. **Navigate to API directory**
 ```bash
+cd api
+```
+
+2. **Install backend dependencies**
+```bash
+npm install
+```
+
+3. **Configure API environment variables**
+
+Create `api/.env` file:
+```env
+MONGO_URL=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+PORT=8000
+OPENAI_API_KEY=your_openai_api_key
+CORS_ORIGINS=["http://localhost:5173"]
+```
+
+4. **Start API server**
+```bash
+npm run dev
+```
+
+The API will be available at `http://localhost:8000`
+
+## 📚 API Documentation
+
+### Authentication Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login user |
+| POST | `/api/auth/refresh` | Refresh access token |
+| POST | `/api/auth/verify` | Verify token |
+| GET | `/api/auth/me` | Get current user |
+| PUT | `/api/auth/me` | Update user profile |
+
+### Apps Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/apps` | List user's apps |
+| GET | `/api/apps/:id` | Get app details |
+| POST | `/api/apps` | Create new app |
+| PUT | `/api/apps/:id` | Update app |
+| DELETE | `/api/apps/:id` | Delete app |
+
+### AI Generation Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/ai/generate` | Generate full app code |
+| POST | `/api/ai/generate-component` | Generate React component |
+| POST | `/api/ai/refactor` | Refactor/improve code |
+
+### Deployment Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/deploy/prepare` | Prepare deployment bundle |
+| GET | `/api/deploy` | List deployments |
+| GET | `/api/deploy/:id` | Get deployment status |
+| PUT | `/api/deploy/:id` | Update deployment status |
+
+## 🔐 Security
+
+- ✅ **Zero production vulnerabilities** - All dependencies scanned and secure
+- ✅ **JWT Authentication** - Secure token-based auth with refresh capability
+- ✅ **Password Hashing** - PBKDF2 with salt (10,000 iterations)
+- ✅ **Rate Limiting** - 100 requests/minute per IP
+- ✅ **CORS Protection** - Environment-based origin whitelist
+- ✅ **Input Validation** - All endpoints validate input
+- ✅ **Environment Variables** - No hardcoded secrets
+
+See [SECURITY.md](SECURITY.md) for detailed security documentation.
+
+## 🎯 Usage Examples
+
+### Creating an App with AI
+
+```typescript
+// Example: Generate a timer app
+const response = await fetch('http://localhost:8000/api/ai/generate', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${accessToken}`
+  },
+  body: JSON.stringify({
+    name: 'Timer App',
+    description: 'A precision timer with lap recording',
+    features: ['Start/Stop Timer', 'Lap Recording', 'Export to CSV'],
+    framework: 'react',
+    styling: 'tailwind'
+  })
+});
+
+const { code } = await response.json();
+console.log(code); // Generated React application code
+```
+
+### Deploying an App
+
+```typescript
+// Prepare deployment bundle
+const response = await fetch('http://localhost:8000/api/deploy/prepare', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${accessToken}`
+  },
+  body: JSON.stringify({
+    appId: 'your-app-id',
+    provider: 'vercel',
+    environment: 'production'
+  })
+});
+
+const { bundle } = await response.json();
+// bundle contains deployment files and instructions
+```
+
+## 📦 Deployment
+
+### Deploy Frontend to Vercel
+
+```bash
+# Install Vercel CLI
 npm i -g vercel
-```
 
-2. **Login to Vercel**
-```bash
+# Login
 vercel login
-```
 
-3. **Deploy**
-```bash
+# Deploy
 vercel --prod
 ```
 
-4. **Set environment variables in Vercel Dashboard**
-- Go to your project settings
-- Add the required environment variables
+### Deploy API to Render/Railway
 
-### Render Deployment
+1. Connect your GitHub repository
+2. Set environment variables in the dashboard
+3. Deploy automatically on push to main
 
-1. **Create a new Static Site on render.com**
+## 🤝 Contributing
 
-2. **Connect your GitHub repository**
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on:
+- Code of conduct
+- Development setup
+- Pull request process
+- Coding standards
 
-3. **Configure build settings**
-- Build Command: `npm run build`
-- Publish Directory: `dist`
-
-4. **Add environment variables**
-- Add the required variables in the Environment section
-
-## API Endpoints
-
-### Authentication (`ninja-auth`)
-
-| Action | Method | Description |
-|--------|--------|-------------|
-| `?action=register` | POST | Register a new user |
-| `?action=login` | POST | Login and get tokens |
-| `?action=refresh` | POST | Refresh access token |
-| `?action=verify` | POST | Verify access token |
-
-### Apps (`ninja-apps`)
-
-| Action | Method | Description |
-|--------|--------|-------------|
-| `?action=list` | GET | List all user apps |
-| `?action=get&id=<id>` | GET | Get a specific app |
-| `?action=create` | POST | Create a new app |
-| `?action=update&id=<id>` | PUT | Update an app |
-| `?action=delete&id=<id>` | DELETE | Delete an app |
-
-### AI Generation (`ninja-generate`)
-
-| Action | Method | Description |
-|--------|--------|-------------|
-| Default | POST | Generate code for an app |
-
-### Deployment (`ninja-deploy`)
-
-| Action | Method | Description |
-|--------|--------|-------------|
-| `?action=prepare` | POST | Prepare deployment bundle |
-| `?action=status` | POST | Get deployment status |
-| `?action=update-status` | POST | Update deployment status |
-
-## Example: Timer App
-
-The platform includes a pre-built Timer App template with:
-
-**Features:**
-- Start/Stop Timer
-- Lap Recording
-- Export Laps as CSV
-- Reset Timer
-- Dark Mode
-
-**Entities:**
-- `Timer`: id, startTime, endTime, isRunning, elapsedTime
-- `Lap`: id, timerId, lapNumber, lapTime, totalTime, createdAt
-
-**Target Audience:** Students and freelancers needing precise time tracking
-
-## Security Features
-
-- **JWT Authentication**: Secure token-based authentication
-- **Password Hashing**: SHA-256 with salt
-- **CORS Protection**: Configured for cross-origin requests
-- **Rate Limiting**: Implemented at the edge function level
-- **Input Validation**: All inputs are validated before processing
-
-## Pricing Plans
+## 📊 Pricing Plans
 
 | Feature | Free | Pro ($29/mo) | Enterprise ($99/mo) |
 |---------|------|--------------|---------------------|
@@ -227,24 +284,44 @@ The platform includes a pre-built Timer App template with:
 | Priority Support | No | Yes | Yes |
 | SSO/SAML | No | No | Yes |
 
-## Contributing
+## 🐛 Troubleshooting
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Common Issues
 
-## License
+**Build fails with module not found**
+```bash
+rm -rf node_modules package-lock.json
+npm install
+```
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+**API connection refused**
+- Ensure the API server is running on port 8000
+- Check `VITE_API_URL` in `.env.local`
+- Verify CORS origins in API `.env`
 
-## Support
+**MongoDB connection error**
+- Verify MongoDB connection string
+- Check network access in MongoDB Atlas
+- Ensure IP whitelist is configured
 
-- **Documentation**: [docs.digitalninja.dev](https://docs.digitalninja.dev)
-- **Discord**: [Join our community](https://discord.gg/digitalninja)
-- **Email**: support@digitalninja.dev
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with [React](https://react.dev/)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
+- AI powered by [OpenAI](https://openai.com/)
+- Database hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+
+## 📧 Support
+
+- **Documentation**: Check this README and [API docs](api/README.md)
+- **Issues**: [GitHub Issues](https://github.com/Poach420/famous.ai-build/issues)
+- **Security**: See [SECURITY.md](SECURITY.md) for reporting vulnerabilities
 
 ---
 
-Built with ❤️ by the Digital Ninja Team
+Built with ❤️ by the Famous.ai Team | [Website](https://famous.ai) | [Discord](#) | [Twitter](#)
+
