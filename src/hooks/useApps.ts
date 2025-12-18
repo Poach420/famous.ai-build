@@ -3,7 +3,7 @@ import { useApi } from './useApi';
 import { App, AppFormData, DeploymentBundle } from '@/types';
 
 export function useApps() {
-  const { callFunction } = useApi();
+  const { callApi } = useApi();
   const [apps, setApps] = useState<App[]>([]);
   const [currentApp, setCurrentApp] = useState<App | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -13,78 +13,77 @@ export function useApps() {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await callFunction('ninja-apps?action=list');
-      setApps(data.apps || []);
-      return data.apps || [];
+      const apps = await callApi<App[]>('/api/apps');
+      setApps(apps || []);
+      return apps || [];
     } catch (err: any) {
       setError(err.message);
       return [];
     } finally {
       setIsLoading(false);
     }
-  }, [callFunction]);
+  }, [callApi]);
 
   const getApp = useCallback(async (id: string) => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await callFunction(`ninja-apps?action=get&id=${id}`);
-      setCurrentApp(data.app);
-      return data.app;
+      const app = await callApi<App>(`/api/apps/${id}`);
+      setCurrentApp(app);
+      return app;
     } catch (err: any) {
       setError(err.message);
       return null;
     } finally {
       setIsLoading(false);
     }
-  }, [callFunction]);
+  }, [callApi]);
 
   const createApp = useCallback(async (appData: AppFormData) => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await callFunction('ninja-apps?action=create', {
+      const app = await callApi<App>('/api/apps', {
         method: 'POST',
         body: appData
       });
-      setApps(prev => [...prev, data.app]);
-      return data.app;
+      setApps(prev => [...prev, app]);
+      return app;
     } catch (err: any) {
       setError(err.message);
       return null;
     } finally {
       setIsLoading(false);
     }
-  }, [callFunction]);
+  }, [callApi]);
 
   const updateApp = useCallback(async (id: string, appData: Partial<AppFormData>) => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await callFunction(`ninja-apps?action=update&id=${id}`, {
+      const app = await callApi<App>(`/api/apps/${id}`, {
         method: 'PUT',
         body: appData
       });
-      setApps(prev => prev.map(app => app.id === id ? data.app : app));
+      setApps(prev => prev.map(a => a.id === id ? app : a));
       if (currentApp?.id === id) {
-        setCurrentApp(data.app);
+        setCurrentApp(app);
       }
-      return data.app;
+      return app;
     } catch (err: any) {
       setError(err.message);
       return null;
     } finally {
       setIsLoading(false);
     }
-  }, [callFunction, currentApp]);
+  }, [callApi, currentApp]);
 
   const deleteApp = useCallback(async (id: string) => {
     setIsLoading(true);
     setError(null);
     try {
-      await callFunction(`ninja-apps?action=delete&id=${id}`, {
-        method: 'DELETE',
-        body: {}
+      await callApi(`/api/apps/${id}`, {
+        method: 'DELETE'
       });
       setApps(prev => prev.filter(app => app.id !== id));
       if (currentApp?.id === id) {
@@ -97,24 +96,24 @@ export function useApps() {
     } finally {
       setIsLoading(false);
     }
-  }, [callFunction, currentApp]);
+  }, [callApi, currentApp]);
 
   const generateCode = useCallback(async (appSpec: AppFormData, customPrompt?: string) => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await callFunction('ninja-generate', {
+      const result = await callApi<{ generated_code: string }>('/api/generate', {
         method: 'POST',
-        body: { appSpec, customPrompt }
+        body: { app_spec: appSpec, custom_prompt: customPrompt }
       });
-      return data.generatedCode;
+      return result.generated_code;
     } catch (err: any) {
       setError(err.message);
       return null;
     } finally {
       setIsLoading(false);
     }
-  }, [callFunction]);
+  }, [callApi]);
 
   const prepareDeployment = useCallback(async (
     appName: string, 
@@ -124,31 +123,31 @@ export function useApps() {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await callFunction('ninja-deploy?action=prepare', {
+      const result = await callApi<{ bundle: DeploymentBundle }>('/api/deploy/prepare', {
         method: 'POST',
-        body: { appName, provider, generatedCode }
+        body: { app_name: appName, provider, generated_code: generatedCode }
       });
-      return data.bundle;
+      return result.bundle;
     } catch (err: any) {
       setError(err.message);
       return null;
     } finally {
       setIsLoading(false);
     }
-  }, [callFunction]);
+  }, [callApi]);
 
   const getDeploymentStatus = useCallback(async (appId?: string) => {
     try {
-      const data = await callFunction('ninja-deploy?action=status', {
+      const result = await callApi<any[]>('/api/deploy/status', {
         method: 'POST',
-        body: { appId }
+        body: { app_id: appId }
       });
-      return data.deployments || [];
+      return result || [];
     } catch (err: any) {
       setError(err.message);
       return [];
     }
-  }, [callFunction]);
+  }, [callApi]);
 
   return {
     apps,

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { supabase } from '@/lib/supabase';
+import { apiClient } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface ApiOptions {
@@ -10,51 +10,64 @@ interface ApiOptions {
 export function useApi() {
   const { accessToken, refreshAccessToken, logout } = useAuth();
 
-  const callFunction = useCallback(async (
-    functionName: string,
+  const callApi = useCallback(async <T = any>(
+    endpoint: string,
     options: ApiOptions = {}
-  ) => {
-    const { body } = options;
+  ): Promise<T> => {
+    const { method = 'GET', body } = options;
 
     try {
-      // First attempt with current token
-      const headers: Record<string, string> = {};
-      if (accessToken) {
-        headers['Authorization'] = `Bearer ${accessToken}`;
+      let response: T;
+      
+      // Make API call based on method
+      switch (method) {
+        case 'GET':
+          response = await apiClient.get<T>(endpoint, accessToken || undefined);
+          break;
+        case 'POST':
+          response = await apiClient.post<T>(endpoint, body, accessToken || undefined);
+          break;
+        case 'PUT':
+          response = await apiClient.put<T>(endpoint, body, accessToken || undefined);
+          break;
+        case 'DELETE':
+          response = await apiClient.delete<T>(endpoint, accessToken || undefined);
+          break;
+        default:
+          throw new Error(`Unsupported method: ${method}`);
       }
 
-      const { data, error } = await supabase.functions.invoke(functionName, {
-        body,
-        headers
-      });
-
-      // If unauthorized, try refreshing token
-      if (error?.message?.includes('401') || data?.error === 'No token provided' || data?.error === 'Invalid token') {
+      return response;
+    } catch (error: any) {
+      // Handle 401 - try to refresh token
+      if (error.message?.includes('401') || error.message?.includes('Unauthorized')) {
         const refreshed = await refreshAccessToken();
         if (refreshed) {
           const newToken = localStorage.getItem('ninja_access_token');
-          const { data: retryData, error: retryError } = await supabase.functions.invoke(functionName, {
-            body,
-            headers: { 'Authorization': `Bearer ${newToken}` }
-          });
           
-          if (retryError) throw new Error(retryError.message);
-          return retryData;
+          // Retry with new token
+          switch (method) {
+            case 'GET':
+              return apiClient.get<T>(endpoint, newToken || undefined);
+            case 'POST':
+              return apiClient.post<T>(endpoint, body, newToken || undefined);
+            case 'PUT':
+              return apiClient.put<T>(endpoint, body, newToken || undefined);
+            case 'DELETE':
+              return apiClient.delete<T>(endpoint, newToken || undefined);
+            default:
+              throw error;
+          }
         } else {
           logout();
           throw new Error('Session expired. Please login again.');
         }
       }
 
-      if (error) throw new Error(error.message);
-      if (data?.error) throw new Error(data.error);
-
-      return data;
-    } catch (error: any) {
-      console.error(`API call to ${functionName} failed:`, error);
+      console.error(`API call to ${endpoint} failed:`, error);
       throw error;
     }
   }, [accessToken, refreshAccessToken, logout]);
 
-  return { callFunction };
+  return { callApi };
 }

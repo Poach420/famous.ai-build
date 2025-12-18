@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { supabase } from '@/lib/supabase';
+import { apiClient } from '@/lib/api';
 import { User, AuthState } from '@/types';
 
 interface AuthContextType extends AuthState {
@@ -83,14 +83,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
-      const { data, error } = await supabase.functions.invoke('ninja-auth', {
-        body: { email, password }
-      });
+      const data = await apiClient.post<{
+        access_token: string;
+        refresh_token: string;
+        user: User;
+      }>('/api/auth/login', { email, password });
 
-      if (error) throw new Error(error.message);
-      if (data.error) throw new Error(data.error);
-
-      saveAuth(data.user, data.accessToken, data.refreshToken);
+      saveAuth(data.user, data.access_token, data.refresh_token);
       return { success: true };
     } catch (error: any) {
       console.error('Login error:', error);
@@ -100,14 +99,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = async (email: string, password: string, name: string): Promise<{ success: boolean; error?: string }> => {
     try {
-      const { data, error } = await supabase.functions.invoke('ninja-auth?action=register', {
-        body: { email, password, name }
-      });
+      const data = await apiClient.post<{
+        access_token: string;
+        refresh_token: string;
+        user: User;
+      }>('/api/auth/register', { email, password, name });
 
-      if (error) throw new Error(error.message);
-      if (data.error) throw new Error(data.error);
-
-      saveAuth(data.user, data.accessToken, data.refreshToken);
+      saveAuth(data.user, data.access_token, data.refresh_token);
       return { success: true };
     } catch (error: any) {
       console.error('Register error:', error);
@@ -124,17 +122,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const refreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
       if (!refreshToken) return false;
 
-      const { data, error } = await supabase.functions.invoke('ninja-auth?action=refresh', {
-        body: { refreshToken }
-      });
+      const data = await apiClient.post<{ access_token: string }>(
+        '/api/auth/refresh',
+        { refresh_token: refreshToken }
+      );
 
-      if (error || data.error) {
-        clearAuth();
-        return false;
-      }
-
-      localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.accessToken);
-      setState(prev => ({ ...prev, accessToken: data.accessToken }));
+      localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.access_token);
+      setState(prev => ({ ...prev, accessToken: data.access_token }));
       return true;
     } catch (error) {
       console.error('Token refresh error:', error);
