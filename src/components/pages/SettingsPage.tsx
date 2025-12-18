@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
@@ -102,17 +103,23 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
-                    <Input
-                      label="Full Name"
-                      value={profileData.name}
-                      onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value }))}
-                    />
-                    <Input
-                      label="Email Address"
-                      type="email"
-                      value={profileData.email}
-                      onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
-                    />
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input
+                        id="name"
+                        value={profileData.name}
+                        onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email Address</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={profileData.email}
+                        onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
+                      />
+                    </div>
                   </div>
 
                   <Button onClick={handleSaveProfile}>Save Changes</Button>
@@ -154,14 +161,14 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                         <p className="text-white font-medium">Sign Out</p>
                         <p className="text-sm text-slate-400">Sign out of your account</p>
                       </div>
-                      <Button variant="danger" size="sm" onClick={handleLogout}>Sign Out</Button>
+                      <Button variant="destructive" size="sm" onClick={handleLogout}>Sign Out</Button>
                     </div>
                     <div className="flex items-center justify-between p-4 bg-red-500/10 rounded-lg">
                       <div>
                         <p className="text-white font-medium">Delete Account</p>
                         <p className="text-sm text-slate-400">Permanently delete your account and all data</p>
                       </div>
-                      <Button variant="danger" size="sm">Delete</Button>
+                      <Button variant="destructive" size="sm">Delete</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -179,7 +186,7 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                       <div>
                         <div className="flex items-center gap-2 mb-1">
                           <p className="text-xl font-bold text-white capitalize">{user?.plan || 'Free'} Plan</p>
-                          <Badge variant="purple">Active</Badge>
+                          <Badge variant="secondary">Active</Badge>
                         </div>
                         <p className="text-sm text-slate-400">
                           {user?.plan === 'free' ? '3 apps, 5 AI generations/month' : 'Unlimited apps and generations'}

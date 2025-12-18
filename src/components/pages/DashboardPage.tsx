@@ -183,7 +183,7 @@ export function DashboardPage({ onNavigate, onSelectApp }: DashboardPageProps) {
                   
                   <div className="flex items-center gap-2 mb-4">
                     {getStatusBadge(app.status)}
-                    <Badge variant="purple">{app.framework}</Badge>
+                    <Badge variant="secondary">{app.framework}</Badge>
                   </div>
 
                   {app.features && app.features.length > 0 && (

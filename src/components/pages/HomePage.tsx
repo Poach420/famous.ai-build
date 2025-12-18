@@ -163,7 +163,7 @@ export function HomePage({ onGetStarted, onNavigate }: HomePageProps) {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
-              <Card key={index} hover className="group">
+              <Card key={index} className="group hover:shadow-lg transition-shadow">
                 <CardContent>
                   <div className="w-12 h-12 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-xl flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition-transform">
                     {feature.icon}

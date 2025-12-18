@@ -39,7 +39,7 @@ export function DeploymentsPage({ onNavigate }: DeploymentsPageProps) {
       case 'prepared':
         return <Badge variant="info">Ready</Badge>;
       case 'failed':
-        return <Badge variant="error">Failed</Badge>;
+        return <Badge variant="destructive">Failed</Badge>;
       default:
         return <Badge variant="default">{status}</Badge>;
     }

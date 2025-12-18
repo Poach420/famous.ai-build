@@ -127,7 +127,7 @@ export function PricingPage({ onGetStarted }: PricingPageProps) {
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <Badge variant="purple" className="px-4 py-1">Most Popular</Badge>
+                  <Badge variant="secondary" className="px-4 py-1">Most Popular</Badge>
                 </div>
               )}
               <CardContent className="pt-8">
