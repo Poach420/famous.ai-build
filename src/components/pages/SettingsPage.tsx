@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Card, CardContent, CardHeader } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/components/ui/Toast';
+import { useToast } from '@/components/ui/use-toast';
 
 interface SettingsPageProps {
   onNavigate: (page: string) => void;
@@ -12,7 +12,7 @@ interface SettingsPageProps {
 
 export function SettingsPage({ onNavigate }: SettingsPageProps) {
   const { user, logout } = useAuth();
-  const { addToast } = useToast();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'profile' | 'account' | 'billing' | 'api'>('profile');
   const [profileData, setProfileData] = useState({
     name: user?.name || '',
@@ -20,13 +20,13 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
   });
 
   const handleSaveProfile = () => {
-    addToast({ type: 'success', message: 'Profile updated successfully' });
+    toast({ title: 'Success', description: 'Profile updated successfully' });
   };
 
   const handleLogout = () => {
     logout();
     onNavigate('home');
-    addToast({ type: 'info', message: 'You have been logged out' });
+    toast({ description: 'You have been logged out' });
   };
 
   const tabs = [

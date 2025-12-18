@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/Button';
-import { Input, Textarea, Select } from '@/components/ui/Input';
-import { Card, CardContent, CardHeader } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { useApps } from '@/hooks/useApps';
-import { useToast } from '@/components/ui/Toast';
+import { useToast } from '@/components/ui/use-toast';
 import { App, AppEntity, AppFormData } from '@/types';
 
 interface BuilderPageProps {
@@ -44,7 +46,7 @@ export function BuilderPage({ selectedApp, onNavigate }: BuilderPageProps) {
   const [deploymentBundle, setDeploymentBundle] = useState<any>(null);
 
   const { createApp, updateApp, generateCode, prepareDeployment, isLoading, error } = useApps();
-  const { addToast } = useToast();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (selectedApp) {
@@ -102,24 +104,24 @@ export function BuilderPage({ selectedApp, onNavigate }: BuilderPageProps) {
 
   const loadTemplate = () => {
     setFormData(timerAppTemplate);
-    addToast({ type: 'info', message: 'Timer App template loaded' });
+    toast({ title: 'Info', description: 'Timer App template loaded' });
   };
 
   const handleSave = async () => {
     if (!formData.name.trim()) {
-      addToast({ type: 'error', message: 'App name is required' });
+      toast({ title: 'Error', description: 'App name is required', variant: 'destructive' });
       return;
     }
 
     if (selectedApp) {
       const updated = await updateApp(selectedApp.id, formData);
       if (updated) {
-        addToast({ type: 'success', message: 'App updated successfully' });
+        toast({ title: 'Success', description: 'App updated successfully' });
       }
     } else {
       const created = await createApp(formData);
       if (created) {
-        addToast({ type: 'success', message: 'App created successfully' });
+        toast({ title: 'Success', description: 'App created successfully' });
         onNavigate('dashboard');
       }
     }
@@ -127,7 +129,7 @@ export function BuilderPage({ selectedApp, onNavigate }: BuilderPageProps) {
 
   const handleGenerate = async () => {
     if (!formData.name.trim()) {
-      addToast({ type: 'error', message: 'Please enter an app name first' });
+      toast({ title: 'Error', description: 'Please enter an app name first', variant: 'destructive' });
       return;
     }
 
@@ -135,15 +137,15 @@ export function BuilderPage({ selectedApp, onNavigate }: BuilderPageProps) {
     if (code) {
       setGeneratedCode(code);
       setActiveTab('preview');
-      addToast({ type: 'success', message: 'Code generated successfully!' });
+      toast({ title: 'Success', description: 'Code generated successfully!' });
     } else {
-      addToast({ type: 'error', message: error || 'Failed to generate code' });
+      toast({ title: 'Error', description: error || 'Failed to generate code', variant: 'destructive' });
     }
   };
 
   const handleDeploy = async (provider: 'vercel' | 'render') => {
     if (!formData.name.trim()) {
-      addToast({ type: 'error', message: 'Please enter an app name first' });
+      toast({ title: 'Error', description: 'Please enter an app name first', variant: 'destructive' });
       return;
     }
 
@@ -151,9 +153,9 @@ export function BuilderPage({ selectedApp, onNavigate }: BuilderPageProps) {
     if (bundle) {
       setDeploymentBundle(bundle);
       setActiveTab('deploy');
-      addToast({ type: 'success', message: `Deployment bundle prepared for ${provider}` });
+      toast({ title: 'Success', description: `Deployment bundle prepared for ${provider}` });
     } else {
-      addToast({ type: 'error', message: error || 'Failed to prepare deployment' });
+      toast({ title: 'Error', description: error || 'Failed to prepare deployment', variant: 'destructive' });
     }
   };
 
@@ -170,7 +172,7 @@ export function BuilderPage({ selectedApp, onNavigate }: BuilderPageProps) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    addToast({ type: 'success', message: 'Deployment bundle downloaded' });
+    toast({ title: 'Success', description: 'Deployment bundle downloaded' });
   };
 
   return (
@@ -401,7 +403,7 @@ export function BuilderPage({ selectedApp, onNavigate }: BuilderPageProps) {
                   size="sm"
                   onClick={() => {
                     navigator.clipboard.writeText(generatedCode);
-                    addToast({ type: 'success', message: 'Code copied to clipboard' });
+                    toast({ title: 'Success', description: 'Code copied to clipboard' });
                   }}
                 >
                   Copy Code

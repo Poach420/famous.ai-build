@@ -1,6 +1,6 @@
-# Digital Ninja App Builder
+# Famous.ai Builder
 
-A fully functional, production-ready platform for building, deploying, and scaling custom applications without vendor lock-in. Built with React, Tailwind CSS, MongoDB Atlas, and GPT-4 AI integration.
+Famous.ai's advanced AI-powered app builder platform - A top-notch, super smart and fast application development system.
 
 ![Digital Ninja](https://d64gsuwffb70l.cloudfront.net/6942bbf9b5d74fa2de2f380f_1765983551922_8b508212.jpg)
 

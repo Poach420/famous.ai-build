@@ -1,7 +1,8 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "famous-ai-builder",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "A top-notch, super smart and fast AI-powered app builder platform",
   "type": "module",
   "scripts": {
     "dev": "vite",

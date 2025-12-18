@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/Button';
-import { Card, CardContent, CardFooter } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { useApps } from '@/hooks/useApps';
 import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/components/ui/Toast';
+import { useToast } from '@/components/ui/use-toast';
 import { App } from '@/types';
 
 const APP_ICONS = [
@@ -24,7 +24,7 @@ interface DashboardPageProps {
 export function DashboardPage({ onNavigate, onSelectApp }: DashboardPageProps) {
   const { user } = useAuth();
   const { apps, isLoading, error, fetchApps, deleteApp } = useApps();
-  const { addToast } = useToast();
+  const { toast } = useToast();
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   useEffect(() => {
@@ -34,9 +34,9 @@ export function DashboardPage({ onNavigate, onSelectApp }: DashboardPageProps) {
   const handleDelete = async (appId: string) => {
     const success = await deleteApp(appId);
     if (success) {
-      addToast({ type: 'success', message: 'App deleted successfully' });
+      toast({ title: 'Success', description: 'App deleted successfully' });
     } else {
-      addToast({ type: 'error', message: 'Failed to delete app' });
+      toast({ title: 'Error', description: 'Failed to delete app', variant: 'destructive' });
     }
     setDeleteConfirm(null);
   };

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Modal } from '@/components/ui/Modal';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/components/ui/Toast';
+import { useToast } from '@/components/ui/use-toast';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -23,7 +24,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { login, register } = useAuth();
-  const { addToast } = useToast();
+  const { toast } = useToast();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -63,14 +64,14 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
         : await register(formData.email, formData.password, formData.name);
 
       if (result.success) {
-        addToast({ type: 'success', message: mode === 'login' ? 'Welcome back!' : 'Account created successfully!' });
+        toast({ title: 'Success', description: mode === 'login' ? 'Welcome back!' : 'Account created successfully!' });
         onSuccess();
         onClose();
       } else {
-        addToast({ type: 'error', message: result.error || 'Authentication failed' });
+        toast({ title: 'Error', description: result.error || 'Authentication failed', variant: 'destructive' });
       }
     } catch (error: any) {
-      addToast({ type: 'error', message: error.message || 'An error occurred' });
+      toast({ title: 'Error', description: error.message || 'An error occurred', variant: 'destructive' });
     } finally {
       setIsLoading(false);
     }
@@ -90,73 +91,69 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={mode === 'login' ? 'Welcome Back' : 'Create Account'}>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>{mode === 'login' ? 'Welcome Back' : 'Create Account'}</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
         {mode === 'register' && (
-          <Input
-            label="Full Name"
-            name="name"
-            placeholder="John Doe"
-            value={formData.name}
-            onChange={handleChange}
-            error={errors.name}
-            leftIcon={
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            }
-          />
+          <div className="space-y-2">
+            <Label htmlFor="name">Full Name</Label>
+            <Input
+              id="name"
+              name="name"
+              placeholder="John Doe"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
+          </div>
         )}
 
-        <Input
-          label="Email Address"
-          name="email"
-          type="email"
-          placeholder="you@example.com"
-          value={formData.email}
-          onChange={handleChange}
-          error={errors.email}
-          leftIcon={
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          }
-        />
-
-        <Input
-          label="Password"
-          name="password"
-          type="password"
-          placeholder="••••••••"
-          value={formData.password}
-          onChange={handleChange}
-          error={errors.password}
-          leftIcon={
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          }
-        />
-
-        {mode === 'register' && (
+        <div className="space-y-2">
+          <Label htmlFor="email">Email Address</Label>
           <Input
-            label="Confirm Password"
-            name="confirmPassword"
+            id="email"
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            name="password"
             type="password"
             placeholder="••••••••"
-            value={formData.confirmPassword}
+            value={formData.password}
             onChange={handleChange}
-            error={errors.confirmPassword}
-            leftIcon={
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-            }
           />
+          {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
+        </div>
+
+        {mode === 'register' && (
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder="••••••••"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
+            {errors.confirmPassword && <p className="text-sm text-destructive">{errors.confirmPassword}</p>}
+          </div>
         )}
 
-        <Button type="submit" className="w-full" isLoading={isLoading}>
-          {mode === 'login' ? 'Sign In' : 'Create Account'}
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading ? 'Please wait...' : mode === 'login' ? 'Sign In' : 'Create Account'}
         </Button>
 
         <div className="relative my-6">
@@ -203,6 +200,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
           </button>
         </p>
       </form>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }
